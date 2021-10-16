@@ -1,6 +1,5 @@
 
 import './App.css';
-import CalendarPage from './components/CalendarPage/CalendarPage';
 import WeekPage from './components/WeekPage/WeekPage';
 import 'bootstrap/dist/css/bootstrap.min.css';
 

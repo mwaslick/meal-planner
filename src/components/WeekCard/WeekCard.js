@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
-import { Button, Card, ListGroup, Row, Col, ListGroupItem } from 'react-bootstrap';
-import DayJS from 'react-dayjs';
+import React from 'react';
+import { Button, Card, ListGroup} from 'react-bootstrap';
 import './WeekCard.css';
 
 export default function WeekCard(props) {
@@ -27,23 +26,23 @@ export default function WeekCard(props) {
                 </Card.Header>
                 
                 <ListGroup variant="flush">
-                    <ListGroup.Item>
+                    <ListGroup.Item id="breakfast" data-day={props.id}>
                         <Card.Text>
                         Breakfast 
                         </Card.Text>
-                        <Button variant="primary" size="sm">Add Meal</Button>
+                        <Button variant="primary" id={props.bid} size="sm" onClick={props.handleShow}>Add Meal</Button>
                     </ListGroup.Item>
-                    <ListGroup.Item>
+                    <ListGroup.Item id="lunch" data-day={props.id}>
                         <Card.Text>
                             Lunch
                         </Card.Text>
-                        <Button variant="primary" size="sm">Add Meal</Button>
+                        <Button variant="primary" id={props.lid} size="sm" onClick={props.handleShow}>Add Meal</Button>
                     </ListGroup.Item>
-                    <ListGroup.Item>
+                    <ListGroup.Item id="dinner" data-day={props.id}>
                     <Card.Text>
                         Dinner
                         </Card.Text>
-                        <Button variant="primary" size="sm">Add Meal</Button>
+                        <Button variant="primary" id={props.did} size="sm" onClick={props.handleShow}>Add Meal</Button>
                     </ListGroup.Item>
                 </ListGroup>
             </Card>
