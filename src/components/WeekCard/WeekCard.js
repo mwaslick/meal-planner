@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { Container, Row, Col, Card, ListGroup, ListGroupItem } from 'react-bootstrap';
-import DayJS from 'react-dayjs';
+import React from 'react';
+import { Button, Card, ListGroup} from 'react-bootstrap';
+import './WeekCard.css';
 
 export default function WeekCard(props) {
 
@@ -8,17 +8,42 @@ export default function WeekCard(props) {
 
         return (
             <Card>
-                {isToday? <Card.Header>
-                   <b> {props.weekday} <br></br> {props.date} </b>
-                </Card.Header> : 
                 <Card.Header>
-                    {props.weekday} <br></br> {props.date}   
-                </Card.Header>}
+                    {isToday? <Card.Title>
+                        <b> {props.weekday} </b>
+                    </Card.Title> : 
+                    <Card.Title>
+                    {props.weekday}    
+                    </Card.Title>}
+
+                    {isToday? <Card.Subtitle>
+                   <b> {props.date} </b>
+                    </Card.Subtitle> : 
+                    <Card.Subtitle>
+                    {props.date}    
+                    </Card.Subtitle>}
+            
+                </Card.Header>
                 
                 <ListGroup variant="flush">
-                    <ListGroup.Item>Breakfast</ListGroup.Item>
-                    <ListGroup.Item>Lunch</ListGroup.Item>
-                    <ListGroup.Item>Dinner</ListGroup.Item>
+                    <ListGroup.Item id="breakfast" data-day={props.id}>
+                        <Card.Text>
+                        Breakfast 
+                        </Card.Text>
+                        <Button variant="primary" id={props.bid} size="sm" onClick={props.handleShow}>Add Meal</Button>
+                    </ListGroup.Item>
+                    <ListGroup.Item id="lunch" data-day={props.id}>
+                        <Card.Text>
+                            Lunch
+                        </Card.Text>
+                        <Button variant="primary" id={props.lid} size="sm" onClick={props.handleShow}>Add Meal</Button>
+                    </ListGroup.Item>
+                    <ListGroup.Item id="dinner" data-day={props.id}>
+                    <Card.Text>
+                        Dinner
+                        </Card.Text>
+                        <Button variant="primary" id={props.did} size="sm" onClick={props.handleShow}>Add Meal</Button>
+                    </ListGroup.Item>
                 </ListGroup>
             </Card>
       );
