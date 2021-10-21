@@ -28,19 +28,22 @@ export default function WeekCard(props) {
                 <ListGroup variant="flush">
                     <ListGroup.Item id="breakfast" data-day={props.id}>
                         <Card.Text>
-                        Breakfast 
+                        Breakfast <br></br>
+                        {props.foodData}
                         </Card.Text>
                         <Button variant="primary" id={props.bid} size="sm" onClick={props.handleShow}>Add Meal</Button>
                     </ListGroup.Item>
                     <ListGroup.Item id="lunch" data-day={props.id}>
                         <Card.Text>
-                            Lunch
+                        Lunch <br></br>
+                        {props.foodData}
                         </Card.Text>
                         <Button variant="primary" id={props.lid} size="sm" onClick={props.handleShow}>Add Meal</Button>
                     </ListGroup.Item>
                     <ListGroup.Item id="dinner" data-day={props.id}>
-                    <Card.Text>
-                        Dinner
+                        <Card.Text>
+                        Dinner<br></br>
+                        {props.foodData}
                         </Card.Text>
                         <Button variant="primary" id={props.did} size="sm" onClick={props.handleShow}>Add Meal</Button>
                     </ListGroup.Item>
