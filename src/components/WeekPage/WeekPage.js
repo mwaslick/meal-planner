@@ -1,91 +1,92 @@
-import {React, Component} from 'react';
+import React, { useEffect, useState} from 'react';
 import WeekCard from '../WeekCard/WeekCard';
 import { Container, Row, CardGroup } from 'react-bootstrap';
 import AddMeal from '../AddMeal/AddMeal';
+import update from 'immutability-helper';
+import dayjs from 'dayjs';
 
-export default class WeekPage extends Component {
+export default function WeekPage() {
 
-   constructor() {
-        super();
-        const dayjs = require ('dayjs');
-        const weekdays = [];
-        const mealData = [];
-        const activeMeal = "";
-        const activeDate = "";
-        this.state = {show: false};
-        
-        this.handleChange = this.handleChange.bind(this);
-        this.saveMeal = this.saveMeal.bind(this);
-        
+    const [weekdays, setWeekdays] = useState([]);
+    const [mealData, setMealData] = useState("");
+    const [mealList, setMealList] = useState([]);
+    const [newMeal, setNewMeal] = useState("");
+    const [activeMeal, setActiveMeal] = useState("");
+    const [activeDate, setActiveDate] = useState("");
+    const [foodData, setFoodData] = useState("");
+    const [show, setShow] = useState(false);
+
+    useEffect(() => {
+        const weekdayList = [];
+        const dayjs = require('dayjs');
         for (var i = 0; i <= 6; i++) {
-            weekdays.push({
+                weekdayList.push({
                 day: dayjs().day(i).format('dddd').toString(),
                 date: dayjs().day(i).format('MMMM D').toString(),
                 isToday: false
             });
         }
 
-        this.state = {weekdays, mealData, activeMeal, activeDate};
-    }
+        let today = dayjs().format('MMMM D').toString();
+        for (var j = 0; j < weekdayList.length; j++) {
+            if (weekdayList[j].date === today) {
+                weekdayList[j].isToday = true;
+            }
+        }
 
-    handleClose = ()=> {
-        this.setState({show: false})
+        setWeekdays(weekdayList);
+
+    }, [mealData])
+
+    const handleClose = ()=> {
+        setShow(false);
     }
     
-    handleShow = (event) => {
+    const handleShow = (event) => {
         const btnId = event.target.id.toString();
         console.log(btnId);
-        this.setState({show:true});
-        this.findData(btnId);
+        setShow(true);
+        findData(btnId);
     }
 
-    findData(btnid) {
+    const findData = (btnid) => {
         if (btnid.charAt(0) === 'b') {
-            this.setState({activeMeal:"Breakfast"});
+            setActiveMeal("Breakfast");
         } else if (btnid.charAt(0) === 'l') {
-            this.setState({activeMeal:"Lunch"});
+            setActiveMeal("Lunch");
         } else if (btnid.charAt(0) === 'd') {
-            this.setState({activeMeal:"Dinner"});
+            setActiveMeal("Dinner");
         }
 
         const length = btnid.length - 1;
         const date = btnid.substr(1, length);
         console.log(date);
-        this.setState({activeDate: date});
+        setActiveDate(date);
     }
 
-    handleChange(event) {
-        this.setState({mealData: event.target.value});
+    const handleChange = (event) => {
+        setMealData(event.target.value)
       }
     
-    saveMeal(event) {
-        console.log(this.state.mealData);
-        console.log(event.target.parentNode);
+    const saveMeal = (event) => {
         event.preventDefault();
-    }
-    
-    componentDidMount() {
-        this.checkToday();
-    }
-
-    checkToday() {
-        const dayjs = require('dayjs');
-        let today = dayjs().format('MMMM D').toString();
-        let newWeekdays = this.state.weekdays;
-        for (var i = 0; i < newWeekdays.length; i++) {
-            if (newWeekdays[i].date === today) {
-                newWeekdays[i].isToday = true;
-            }
-        }
-        this.setState({weekdays: newWeekdays});
+        let newMeal = {
+            date: activeDate,
+            meal: activeMeal,
+            food: mealData
+        };
+        setNewMeal(newMeal);
+        let newMealList = [...mealList, newMeal];
+        setMealList(newMealList);
+        console.log(mealList);
+        handleClose();
     }
 
-   render() {
-        return (
-            <Container>
+    return (
+        <Container>
                 <Row>
                     <CardGroup>
-                    {this.state.weekdays.map((date, index)=>{
+                    {weekdays.map((date, index)=>{
                         return (
                         <WeekCard 
                         key={index}
@@ -96,21 +97,21 @@ export default class WeekPage extends Component {
                         weekday = {date.day} 
                         date = {date.date} 
                         today = {date.isToday} 
-                        handleShow= {this.handleShow}/>
+                        handleShow= {handleShow}
+                        foodData = {foodData}/>
                         );})
                     }
                     </CardGroup>
 
                     <AddMeal
-                        show = {this.state.show}
-                        handleClose = {this.handleClose}
-                        handleChange = {this.handleChange}
-                        saveMeal = {this.saveMeal}
-                        meal = {this.state.activeMeal}
-                        date = {this.state.activeDate}
+                        show = {show}
+                        handleClose = {handleClose}
+                        handleChange = {handleChange}
+                        saveMeal = {saveMeal}
+                        meal = {activeMeal}
+                        date = {activeDate}
                     />
                 </Row> 
             </Container>
         );
     } 
-}
