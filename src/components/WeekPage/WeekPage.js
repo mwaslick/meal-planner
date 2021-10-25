@@ -1,4 +1,4 @@
-import React, { useEffect, useState} from 'react';
+import React, { useEffect, useState, useRef} from 'react';
 import WeekCard from '../WeekCard/WeekCard';
 import { Container, Row, CardGroup } from 'react-bootstrap';
 import AddMeal from '../AddMeal/AddMeal';
@@ -8,21 +8,25 @@ import dayjs from 'dayjs';
 export default function WeekPage() {
 
     const [weekdays, setWeekdays] = useState([]);
+    const [reset, setReset] = useState(false);
     const [mealData, setMealData] = useState("");
-    const [mealList, setMealList] = useState([]);
+    const [mealList, setMealList] = useState(JSON.parse(localStorage.getItem("mealList")));
     const [newMeal, setNewMeal] = useState("");
     const [activeMeal, setActiveMeal] = useState("");
     const [activeDate, setActiveDate] = useState("");
-    const [foodData, setFoodData] = useState("");
     const [show, setShow] = useState(false);
 
     useEffect(() => {
+
         const weekdayList = [];
         const dayjs = require('dayjs');
         for (var i = 0; i <= 6; i++) {
                 weekdayList.push({
                 day: dayjs().day(i).format('dddd').toString(),
                 date: dayjs().day(i).format('MMMM D').toString(),
+                breakfast: "",
+                lunch: "",
+                dinner: "",
                 isToday: false
             });
         }
@@ -33,10 +37,39 @@ export default function WeekPage() {
                 weekdayList[j].isToday = true;
             }
         }
+        
+
+        if (!mealList) {
+            setMealList([]);
+        }
+
+        const displayMeals = (weekdays, meals) => {
+            if (meals.length > 0) {
+                weekdays.forEach(day => {
+                    for (var i = 0; i < meals.length; i++) {
+                        if (meals[i].date === day.date) {
+                            if (meals[i].meal === "Breakfast") {
+                                day.breakfast = meals[i].food;
+                            } else if (meals[i].meal === "Lunch") {
+                                day.lunch = meals[i].food;
+                            } else if (meals[i].meal === "Dinner") {
+                                day.dinner = meals[i].food;
+                            }
+                        }
+                    } })
+                }
+            }
+
+
+        if(mealList) {
+            const mealsData = displayMeals(weekdayList, mealList);
+        }  
+        
 
         setWeekdays(weekdayList);
+        console.log(mealList);
 
-    }, [mealData])
+    }, [reset])
 
     const handleClose = ()=> {
         setShow(false);
@@ -77,8 +110,9 @@ export default function WeekPage() {
         };
         setNewMeal(newMeal);
         let newMealList = [...mealList, newMeal];
+        localStorage.setItem("mealList", JSON.stringify(newMealList));
         setMealList(newMealList);
-        console.log(mealList);
+        setReset(!reset);
         handleClose();
     }
 
@@ -98,7 +132,9 @@ export default function WeekPage() {
                         date = {date.date} 
                         today = {date.isToday} 
                         handleShow= {handleShow}
-                        foodData = {foodData}/>
+                        breakfast= {date.breakfast}
+                        lunch = {date.lunch}
+                        dinner= {date.dinner} />
                         );})
                     }
                     </CardGroup>
