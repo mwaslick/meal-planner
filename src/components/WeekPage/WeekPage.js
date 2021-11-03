@@ -1,28 +1,32 @@
-import React, { useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import WeekCard from '../WeekCard/WeekCard';
-import { Container, Row, CardGroup } from 'react-bootstrap';
+import { Container, Row, Col, CardGroup } from 'react-bootstrap';
 import AddMeal from '../AddMeal/AddMeal';
-import update from 'immutability-helper';
 import dayjs from 'dayjs';
 
 export default function WeekPage() {
 
     const [weekdays, setWeekdays] = useState([]);
+    const [reset, setReset] = useState(false);
     const [mealData, setMealData] = useState("");
-    const [mealList, setMealList] = useState([]);
+    const [mealList, setMealList] = useState(JSON.parse(localStorage.getItem("mealList")));
     const [newMeal, setNewMeal] = useState("");
     const [activeMeal, setActiveMeal] = useState("");
     const [activeDate, setActiveDate] = useState("");
-    const [foodData, setFoodData] = useState("");
     const [show, setShow] = useState(false);
+    const [mealShow, setMealShow] = useState(false);
 
     useEffect(() => {
+
         const weekdayList = [];
         const dayjs = require('dayjs');
         for (var i = 0; i <= 6; i++) {
                 weekdayList.push({
                 day: dayjs().day(i).format('dddd').toString(),
                 date: dayjs().day(i).format('MMMM D').toString(),
+                breakfast: "",
+                lunch: "",
+                dinner: "",
                 isToday: false
             });
         }
@@ -33,10 +37,39 @@ export default function WeekPage() {
                 weekdayList[j].isToday = true;
             }
         }
+        
+
+        if (!mealList) {
+            setMealList([]);
+        }
+
+        const displayMeals = (weekdays, meals) => {
+            if (meals.length > 0) {
+                weekdays.forEach(day => {
+                    for (var i = 0; i < meals.length; i++) {
+                        if (meals[i].date === day.date) {
+                            if (meals[i].meal === "Breakfast") {
+                                day.breakfast = meals[i].food;
+                            } else if (meals[i].meal === "Lunch") {
+                                day.lunch = meals[i].food;
+                            } else if (meals[i].meal === "Dinner") {
+                                day.dinner = meals[i].food;
+                            }
+                        }
+                    } })
+                }
+            }
+
+
+        if(mealList) {
+            displayMeals(weekdayList, mealList);
+        }  
+        
 
         setWeekdays(weekdayList);
+        console.log(mealList);
 
-    }, [mealData])
+    }, [reset])
 
     const handleClose = ()=> {
         setShow(false);
@@ -47,6 +80,14 @@ export default function WeekPage() {
         console.log(btnId);
         setShow(true);
         findData(btnId);
+    }
+
+    const handleMealOpen = ()=> {
+        setMealShow(true);
+    }
+
+    const handleMealClose = () => {
+        setMealShow(false);
     }
 
     const findData = (btnid) => {
@@ -77,14 +118,34 @@ export default function WeekPage() {
         };
         setNewMeal(newMeal);
         let newMealList = [...mealList, newMeal];
+        localStorage.setItem("mealList", JSON.stringify(newMealList));
         setMealList(newMealList);
-        console.log(mealList);
+        setReset(!reset);
         handleClose();
+    }
+
+    const deleteMeal = (event) => {
+        event.preventDefault();
+        let mealDay = event.target.id.toString();
+        findData(mealDay);
+        let newMealList = [...mealList];
+        console.log(activeMeal);
+        let filteredMeals = newMealList.filter(function (listedMeal) {
+            if (listedMeal.meal == activeMeal && listedMeal.date == activeDate) {
+                return false;
+            } else {
+                return true;
+            }
+        });
+        localStorage.setItem("mealList", JSON.stringify(filteredMeals));
+        setMealList(filteredMeals);
+        setReset(!reset);
     }
 
     return (
         <Container>
                 <Row>
+                    <Col xs={{ span: 10, offset: 1 }}>
                     <CardGroup>
                     {weekdays.map((date, index)=>{
                         return (
@@ -98,7 +159,13 @@ export default function WeekPage() {
                         date = {date.date} 
                         today = {date.isToday} 
                         handleShow= {handleShow}
-                        foodData = {foodData}/>
+                        breakfast= {date.breakfast}
+                        lunch = {date.lunch}
+                        dinner= {date.dinner} 
+                        open= {mealShow}
+                        handleOpen = {handleMealOpen}
+                        handleClose = {handleMealClose}
+                        deleteMeal = {deleteMeal} />
                         );})
                     }
                     </CardGroup>
@@ -111,6 +178,7 @@ export default function WeekPage() {
                         meal = {activeMeal}
                         date = {activeDate}
                     />
+                    </Col>
                 </Row> 
             </Container>
         );
