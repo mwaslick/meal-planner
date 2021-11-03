@@ -15,6 +15,7 @@ export default function WeekPage() {
     const [activeDate, setActiveDate] = useState("");
     const [show, setShow] = useState(false);
     const [mealShow, setMealShow] = useState(false);
+    const [mealEdit, setMealEdit] = useState(false);
 
     useEffect(() => {
 
@@ -131,7 +132,7 @@ export default function WeekPage() {
         let newMealList = [...mealList];
         console.log(activeMeal);
         let filteredMeals = newMealList.filter(function (listedMeal) {
-            if (listedMeal.meal == activeMeal && listedMeal.date == activeDate) {
+            if (listedMeal.meal === activeMeal && listedMeal.date === activeDate) {
                 return false;
             } else {
                 return true;
@@ -139,6 +140,25 @@ export default function WeekPage() {
         });
         localStorage.setItem("mealList", JSON.stringify(filteredMeals));
         setMealList(filteredMeals);
+        setReset(!reset);
+    }
+
+    const toggleEdit = () => {
+        setMealEdit(!mealEdit);
+    }
+
+    const editMeal = (event) => {
+        event.preventDefault();
+        const oldMeal = event.target.id.toString();
+        const newMealName = document.getElementById("food-name").value.toString();
+        let newMealList = [...mealList];
+        for (var i = 0; i < newMealList.length; i++) {
+            if (newMealList[i].food.toString() === oldMeal) {
+                newMealList[i].food = newMealName;
+            }
+        }
+        localStorage.setItem("mealList", JSON.stringify(newMealList));
+        setMealList(newMealList);
         setReset(!reset);
     }
 
@@ -165,7 +185,10 @@ export default function WeekPage() {
                         open= {mealShow}
                         handleOpen = {handleMealOpen}
                         handleClose = {handleMealClose}
-                        deleteMeal = {deleteMeal} />
+                        deleteMeal = {deleteMeal}
+                        editMeal={editMeal}
+                        toggleEdit= {toggleEdit}
+                        edit = {mealEdit} />
                         );})
                     }
                     </CardGroup>

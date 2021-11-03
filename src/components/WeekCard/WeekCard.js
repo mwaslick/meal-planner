@@ -39,14 +39,17 @@ export default function WeekCard(props) {
                         Breakfast <br></br>
                         {props.breakfast !== "" ? 
                             <MealBlock
-                                meal = "breakfast"
-                                food = {props.breakfast}
-                                open = {props.open}
-                                handleOpen = {props.handleOpen}
-                                handleClose = {props.handleClose}
-                                date={props.date}
-                                deleteMeal={props.deleteMeal}
-                                id={props.bid}
+                            meal = "Breakfast"
+                            food = {props.breakfast}
+                            open = {props.open}
+                            handleOpen = {props.handleOpen}
+                            handleClose = {props.handleClose}
+                            date={props.date}
+                            deleteMeal={props.deleteMeal}
+                            id={props.bid}
+                            editMeal={props.editMeal}
+                            edit = {props.edit}
+                            toggleEdit= {props.toggleEdit}  
                             />  :
                         <></>}
                         </Card.Text>
@@ -62,7 +65,7 @@ export default function WeekCard(props) {
                         Lunch <br></br>
                         {props.lunch !== "" ? 
                          <MealBlock
-                         meal = "lunch"
+                         meal = "Lunch"
                          food = {props.lunch}
                          open = {props.open}
                          handleOpen = {props.handleOpen}
@@ -70,6 +73,9 @@ export default function WeekCard(props) {
                          date={props.date}
                          deleteMeal={props.deleteMeal}
                          id={props.lid}
+                         editMeal={props.editMeal}
+                         edit = {props.edit}
+                         toggleEdit= {props.toggleEdit}                  
                         />  :
                         <></>}
                         </Card.Text>
@@ -85,7 +91,7 @@ export default function WeekCard(props) {
                         Dinner<br></br>
                         {props.dinner !== "" ? 
                         <MealBlock
-                            meal = "dinner"
+                            meal = "Dinner"
                             food = {props.dinner}
                             open = {props.open}
                             handleOpen= {props.handleOpen}
@@ -93,6 +99,9 @@ export default function WeekCard(props) {
                             date={props.date}
                             deleteMeal={props.deleteMeal}
                             id={props.did}
+                            editMeal={props.editMeal}
+                            edit = {props.edit}
+                            toggleEdit= {props.toggleEdit}
                         /> :
                         <></>}
                         </Card.Text>

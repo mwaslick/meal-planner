@@ -9,6 +9,8 @@ import PropTypes from 'prop-types';
 import SwipeableViews from 'react-swipeable-views';
 import AppBar from '@mui/material/AppBar'
 import { useTheme } from '@mui/material/styles';
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -46,7 +48,7 @@ function a11yProps(index) {
 export default function MealBlock(props) { 
 
     const [open, setOpen] = useState(false);
-    const [value, setValue] = React.useState(0);
+    const [value, setValue] = useState(0);
     const theme = useTheme();
 
     const handleTabChange = (event, newValue) => {
@@ -101,11 +103,71 @@ export default function MealBlock(props) {
               onChangeIndex={handleTabChangeIndex}
             >
               <TabPanel value={value} index={0} dir={theme.direction}>
-                {props.date}<br />
-                {props.meal} <br />
-                {props.food} <br />
+                <Typography variant="h5" gutterBottom component="div">
+                  {props.date} : {props.meal} 
+                </Typography>
 
-                <Button variant="contained" id={props.id} onClick={props.deleteMeal}>Delete Meal</Button>
+                
+                <Box
+                  component="form"
+                  sx={{
+                    '& > :not(style)': { m: 1, width: '40ch' },
+                  }}
+                  noValidate
+                  autoComplete="off">
+                  <b> Meal Name: </b> <br />
+                  {props.edit ? 
+                    <TextField
+                      id="food-name"
+                      label="Edit Meal Name"
+                      placeholder={props.food}
+                      variant="filled"
+                    />
+                  :
+                  <div> {props.food} </div>
+                  }
+      
+                  <b>Add ingredients?</b>
+                  {props.edit ? 
+                       <TextField
+                       id="standard-multiline-static"
+                       label="Ingredients"
+                       multiline
+                       rows={3}
+                       placeholder="Add ingredients?"
+                       variant="filled"
+                     /> :
+                  <div>  </div>
+                  }
+
+                <b>Add recipe?</b>
+                {props.edit ? 
+                       <TextField
+                       id="standard-multiline-static"
+                       label="Recipe"
+                       multiline
+                       rows={3}
+                       placeholder="Add recipe?"
+                       variant="filled"
+                     /> :
+                  <div>  </div>
+                  }
+
+
+                <Stack direction="row" spacing={1}>
+                  <Button variant="contained" onClick={props.toggleEdit}>
+                    Edit Meal
+                  </Button>
+
+                  {props.edit ? 
+                    <Button variant="contained" id={props.food} onClick = {props.editMeal}>
+                      Save Meal
+                      </Button> : <></>}
+                  <Button variant="contained" id={props.id} onClick={props.deleteMeal}>
+                    Delete Meal
+                  </Button>
+                </Stack>
+                </Box>
               </TabPanel>
             </SwipeableViews>
           </Box>
