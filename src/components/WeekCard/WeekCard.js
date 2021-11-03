@@ -1,5 +1,8 @@
 import React from 'react';
-import { Button, Card, ListGroup} from 'react-bootstrap';
+import { Card, ListGroup} from 'react-bootstrap';
+import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack'
+import MealBlock from '../MealBlock/MealBlock';
 import './WeekCard.css';
 
 export default function WeekCard(props) {
@@ -26,26 +29,75 @@ export default function WeekCard(props) {
                 </Card.Header>
                 
                 <ListGroup variant="flush">
-                    <ListGroup.Item id="breakfast" data-day={props.id}>
-                        <Card.Text>
+                    
+                    <ListGroup.Item id="breakfast" style={{height: '10rem'}} data-day={props.id}>
+                        <Stack 
+                        direction= "column"
+                        justifyContent="space-around"
+                        spacing={4}>
+                        <Card.Text style={{height: '4rem'}}>
                         Breakfast <br></br>
-                        {props.breakfast}
+                        {props.breakfast !== "" ? 
+                            <MealBlock
+                                meal = "breakfast"
+                                food = {props.breakfast}
+                                open = {props.open}
+                                handleOpen = {props.handleOpen}
+                                handleClose = {props.handleClose}
+                                date={props.date}
+                                deleteMeal={props.deleteMeal}
+                                id={props.bid}
+                            />  :
+                        <></>}
                         </Card.Text>
-                        <Button variant="primary" id={props.bid} size="sm" onClick={props.handleShow}>Add Meal</Button>
+                        <Button className="addmeal" variant="text" id={props.bid} onClick=  {props.handleShow}>Add Meal</Button>
+                        </Stack>
                     </ListGroup.Item>
-                    <ListGroup.Item id="lunch" data-day={props.id}>
-                        <Card.Text>
+                    <ListGroup.Item id="lunch" style={{height: '10rem'}} data-day={props.id}>
+                        <Stack 
+                            direction= "column"
+                            justifyContent="space-around"
+                            spacing={4}>
+                        <Card.Text style={{height: '4rem'}}>
                         Lunch <br></br>
-                        {props.lunch}
+                        {props.lunch !== "" ? 
+                         <MealBlock
+                         meal = "lunch"
+                         food = {props.lunch}
+                         open = {props.open}
+                         handleOpen = {props.handleOpen}
+                         handleClose = {props.handleClose}
+                         date={props.date}
+                         deleteMeal={props.deleteMeal}
+                         id={props.lid}
+                        />  :
+                        <></>}
                         </Card.Text>
-                        <Button variant="primary" id={props.lid} size="sm" onClick={props.handleShow}>Add Meal</Button>
+                        <Button className="addmeal" variant="text" id={props.lid} onClick={props.handleShow}>Add Meal</Button>
+                        </Stack>
                     </ListGroup.Item>
-                    <ListGroup.Item id="dinner" data-day={props.id}>
-                        <Card.Text>
+                    <ListGroup.Item id="dinner" style={{height: '10rem'}} data-day={props.id}>
+                        <Stack 
+                            direction= "column"
+                            justifyContent="space-around"
+                            spacing={4}>
+                        <Card.Text style={{height: '4rem'}}>
                         Dinner<br></br>
-                        {props.dinner}
+                        {props.dinner !== "" ? 
+                        <MealBlock
+                            meal = "dinner"
+                            food = {props.dinner}
+                            open = {props.open}
+                            handleOpen= {props.handleOpen}
+                            handleClose = {props.handleClose}
+                            date={props.date}
+                            deleteMeal={props.deleteMeal}
+                            id={props.did}
+                        /> :
+                        <></>}
                         </Card.Text>
-                        <Button variant="primary" id={props.did} size="sm" onClick={props.handleShow}>Add Meal</Button>
+                        <Button className="addmeal" variant="text" id={props.did} onClick={props.handleShow}>Add Meal</Button>
+                        </Stack>
                     </ListGroup.Item>
                 </ListGroup>
             </Card>

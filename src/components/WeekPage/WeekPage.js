@@ -1,8 +1,7 @@
-import React, { useEffect, useState, useRef} from 'react';
+import React, { useEffect, useState } from 'react';
 import WeekCard from '../WeekCard/WeekCard';
-import { Container, Row, CardGroup } from 'react-bootstrap';
+import { Container, Row, Col, CardGroup } from 'react-bootstrap';
 import AddMeal from '../AddMeal/AddMeal';
-import update from 'immutability-helper';
 import dayjs from 'dayjs';
 
 export default function WeekPage() {
@@ -15,6 +14,7 @@ export default function WeekPage() {
     const [activeMeal, setActiveMeal] = useState("");
     const [activeDate, setActiveDate] = useState("");
     const [show, setShow] = useState(false);
+    const [mealShow, setMealShow] = useState(false);
 
     useEffect(() => {
 
@@ -62,7 +62,7 @@ export default function WeekPage() {
 
 
         if(mealList) {
-            const mealsData = displayMeals(weekdayList, mealList);
+            displayMeals(weekdayList, mealList);
         }  
         
 
@@ -80,6 +80,14 @@ export default function WeekPage() {
         console.log(btnId);
         setShow(true);
         findData(btnId);
+    }
+
+    const handleMealOpen = ()=> {
+        setMealShow(true);
+    }
+
+    const handleMealClose = () => {
+        setMealShow(false);
     }
 
     const findData = (btnid) => {
@@ -116,9 +124,28 @@ export default function WeekPage() {
         handleClose();
     }
 
+    const deleteMeal = (event) => {
+        event.preventDefault();
+        let mealDay = event.target.id.toString();
+        findData(mealDay);
+        let newMealList = [...mealList];
+        console.log(activeMeal);
+        let filteredMeals = newMealList.filter(function (listedMeal) {
+            if (listedMeal.meal == activeMeal && listedMeal.date == activeDate) {
+                return false;
+            } else {
+                return true;
+            }
+        });
+        localStorage.setItem("mealList", JSON.stringify(filteredMeals));
+        setMealList(filteredMeals);
+        setReset(!reset);
+    }
+
     return (
         <Container>
                 <Row>
+                    <Col xs={{ span: 10, offset: 1 }}>
                     <CardGroup>
                     {weekdays.map((date, index)=>{
                         return (
@@ -134,7 +161,11 @@ export default function WeekPage() {
                         handleShow= {handleShow}
                         breakfast= {date.breakfast}
                         lunch = {date.lunch}
-                        dinner= {date.dinner} />
+                        dinner= {date.dinner} 
+                        open= {mealShow}
+                        handleOpen = {handleMealOpen}
+                        handleClose = {handleMealClose}
+                        deleteMeal = {deleteMeal} />
                         );})
                     }
                     </CardGroup>
@@ -147,6 +178,7 @@ export default function WeekPage() {
                         meal = {activeMeal}
                         date = {activeDate}
                     />
+                    </Col>
                 </Row> 
             </Container>
         );
