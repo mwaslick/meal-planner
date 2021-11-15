@@ -49,7 +49,8 @@ export default function WeekCard(props) {
                             id={props.bid}
                             editMeal={props.editMeal}
                             edit = {props.edit}
-                            toggleEdit= {props.toggleEdit}  
+                            openEdit= {props.openEdit}
+                            closeEdit = {props.closeEdit}  
                             />  :
                         <></>}
                         </Card.Text>
@@ -75,7 +76,8 @@ export default function WeekCard(props) {
                          id={props.lid}
                          editMeal={props.editMeal}
                          edit = {props.edit}
-                         toggleEdit= {props.toggleEdit}                  
+                         openEdit= {props.openEdit}
+                        closeEdit = {props.closeEdit}                   
                         />  :
                         <></>}
                         </Card.Text>
@@ -101,7 +103,8 @@ export default function WeekCard(props) {
                             id={props.did}
                             editMeal={props.editMeal}
                             edit = {props.edit}
-                            toggleEdit= {props.toggleEdit}
+                            openEdit= {props.openEdit}
+                            closeEdit = {props.closeEdit}  
                         /> :
                         <></>}
                         </Card.Text>

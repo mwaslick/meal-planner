@@ -129,8 +129,8 @@ export default function WeekPage() {
         event.preventDefault();
         let mealDay = event.target.id.toString();
         findData(mealDay);
+        setReset(!reset);
         let newMealList = [...mealList];
-        console.log(activeMeal);
         let filteredMeals = newMealList.filter(function (listedMeal) {
             if (listedMeal.meal === activeMeal && listedMeal.date === activeDate) {
                 return false;
@@ -143,23 +143,32 @@ export default function WeekPage() {
         setReset(!reset);
     }
 
-    const toggleEdit = () => {
-        setMealEdit(!mealEdit);
+    const openEdit = () => {
+        setMealEdit(true);
+    }
+
+    const closeEdit= () => {
+        setMealEdit(false);
     }
 
     const editMeal = (event) => {
         event.preventDefault();
         const oldMeal = event.target.id.toString();
         const newMealName = document.getElementById("food-name").value.toString();
-        let newMealList = [...mealList];
-        for (var i = 0; i < newMealList.length; i++) {
-            if (newMealList[i].food.toString() === oldMeal) {
+        if (oldMeal === newMealName) {
+            return;
+        } else {
+            let newMealList = [...mealList];
+            for (var i = 0; i < newMealList.length; i++) {
+                if (newMealList[i].food.toString() === oldMeal) {
                 newMealList[i].food = newMealName;
+                }
             }
-        }
-        localStorage.setItem("mealList", JSON.stringify(newMealList));
-        setMealList(newMealList);
-        setReset(!reset);
+            localStorage.setItem("mealList", JSON.stringify(newMealList));
+            setMealList(newMealList);
+            setReset(!reset);
+            closeEdit();
+        }   
     }
 
     return (
@@ -187,7 +196,8 @@ export default function WeekPage() {
                         handleClose = {handleMealClose}
                         deleteMeal = {deleteMeal}
                         editMeal={editMeal}
-                        toggleEdit= {toggleEdit}
+                        openEdit= {openEdit}
+                        closeEdit = {closeEdit}
                         edit = {mealEdit} />
                         );})
                     }

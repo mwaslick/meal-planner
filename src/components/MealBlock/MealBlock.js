@@ -82,7 +82,7 @@ export default function MealBlock(props) {
               onClose={toggleDrawer("right", false)}
               onOpen={toggleDrawer("right", true)}>
               <Box
-                sx={{ width: 450 }}
+                sx={{ width: 375 }}
                 role="presentation"
                 >
               <AppBar position="static">
@@ -155,13 +155,18 @@ export default function MealBlock(props) {
 
 
                 <Stack direction="row" spacing={1}>
-                  <Button variant="contained" onClick={props.toggleEdit}>
-                    Edit Meal
+                  {props.edit ? 
+                  <Button variant="contained" onClick={props.closeEdit}>
+                    Close Edit
                   </Button>
+                  
+                  : <Button variant="contained" onClick={props.openEdit}>
+                    Edit Meal
+                  </Button>}
 
                   {props.edit ? 
                     <Button variant="contained" id={props.food} onClick = {props.editMeal}>
-                      Save Meal
+                      Save
                       </Button> : <></>}
                   <Button variant="contained" id={props.id} onClick={props.deleteMeal}>
                     Delete Meal
